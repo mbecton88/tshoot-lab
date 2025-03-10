@@ -8,7 +8,120 @@ To simulate common help desk/IT Support scenarios and practice troubleshooting t
 * **Action:** Recreate the network topology as outlined in the previous steps, including the PCs, switch, router, server, and cloud.
 * **Action:** Configure the IP addresses and routing as described.
 * **Action:** Ensure the network is working (test connectivity with ping).
+# Packet Tracer Network Topology Setup (R1, R2, Remote Server)
 
+This following outlines the setup for a Packet Tracer network topology using two routers (R1 and R2) and a server to simulate an Azure environment.
+
+## Devices
+
+* PCs: 2 (PC1 and PC2) - Representing local users.
+* Switch: 1 (SW1 - 2960 Switch) - Connecting the PCs and Server1.
+* Routers: 2 (R1 and R2 - 2911 Routers) - R1 connecting the local network to R2 (simulating the internet), and R2 connecting to the Azure Server.
+* Servers: 2 (Server1 and Azure Server) - Server1 representing an internal resource, and Azure Server representing an Azure VM.
+
+## Connections
+
+* PC1 -> SW1 (FastEthernet0 -> FastEthernet0/1)
+* PC2 -> SW1 (FastEthernet0 -> FastEthernet0/2)
+* Server1 -> SW1 (FastEthernet0 -> FastEthernet0/3)
+* SW1 -> R1 (FastEthernet0/24 -> GigabitEthernet0/0)
+* R1 -> R2 (GigabitEthernet0/1 -> GigabitEthernet0/0)
+* R2 -> Azure Server (GigabitEthernet0/1 -> FastEthernet0)
+
+## IP Addressing
+
+* **Local Network (PC1, PC2, Server1, R1):**
+    * Network Address: 192.168.1.0/24
+    * R1 (GigabitEthernet0/0): 192.168.1.1
+    * PC1: 192.168.1.10
+    * PC2: 192.168.1.11
+    * Server1: 192.168.1.12
+* **R1 to R2 Link:**
+    * Network Address: 203.0.113.0/30
+    * R1 (GigabitEthernet0/1): 203.0.113.1
+    * R2 (GigabitEthernet0/0): 203.0.113.2
+* **Azure Network (R2, Azure Server):**
+    * Network Address: 10.0.0.0/24
+    * R2 (GigabitEthernet0/1): 10.0.0.1
+    * Azure Server (FastEthernet0): 10.0.0.4
+
+## Configuration Commands
+
+### R1 Configuration
+
+enable<br>
+configure terminal<br>
+interface GigabitEthernet0/0<br>
+ip address 192.168.1.1 255.255.255.0<br>
+no shutdown<br>
+interface GigabitEthernet0/1<br>
+ip address 203.0.113.1 255.255.255.252<br>
+no shutdown<br>
+ip route 0.0.0.0 0.0.0.0 203.0.113.2<br>
+end<br>
+copy running-config startup-config<br>
+
+### R2 Configuration
+
+enable<br>
+configure terminal<br>
+interface GigabitEthernet0/0<br>
+ip address 203.0.113.2 255.255.255.252<br>
+no shutdown<br>
+interface GigabitEthernet0/1<br>
+ip address 10.0.0.1 255.255.255.0<br>
+no shutdown<br>
+ip route 192.168.1.0 255.255.255.0 203.0.113.1<br>
+end<br>
+copy running-config startup-config<br>
+![image](https://github.com/user-attachments/assets/78d78c38-2665-4e44-bf66-e8410fa540a2)<br>
+
+### PC1 Configuration
+
+IP Address: 192.168.1.10<br>
+Subnet Mask: 255.255.255.0<br>
+Default Gateway: 192.168.1.1<br>
+![image](https://github.com/user-attachments/assets/d6406f48-9192-4ebb-b90f-f594f47cc18a)
+![image](https://github.com/user-attachments/assets/57de3ef8-2a73-4f53-895a-e6b30b91b687)
+
+### PC2 Configuration
+
+IP Address: 192.168.1.11<br>
+Subnet Mask: 255.255.255.0<br>
+Default Gateway: 192.168.1.1<br>
+
+
+### Server1 Configuration
+
+IP Address: 192.168.1.12<br>
+Subnet Mask: 255.255.255.0<br>
+Default Gateway: 192.168.1.1<br>
+
+
+### Azure Server Configuration
+
+IP Address: 10.0.0.4<br>
+Subnet Mask: 255.255.255.0<br>
+Default Gateway: 10.0.0.1<br>
+
+## Testing Connectivity
+
+* From PC1 or PC2:
+    * `ping 192.168.1.1`
+    * `ping 203.0.113.2`
+    * `ping 10.0.0.4`
+
+## Breaking the Network for Troubleshooting
+
+* **Disconnected Ethernet Cable (Hardware Issue):**
+    * Disconnect the Ethernet cable between PC1 and SW1.
+* **Network Troubleshooting (Azure Connectivity):**
+    * On R1:
+        ```
+        configure terminal
+        no ip route 0.0.0.0 0.0.0.0 203.0.113.2
+        end
+        ```
 ### Azure VMs:
 
 * **Action:** Ensure your "DC-1" and "Client-1" VMs are running.
