@@ -1,16 +1,18 @@
 **Objective:**
 To simulate common help desk/IT Support scenarios and practice troubleshooting techniques using osTicket, Azure VMs, and Packet Tracer.
 
+**Prerequisites:**
+* Completion of osTicket lab
+* Completion of Active Directory lab
+* Cisco's Packet Tracer installed (Free to download)
+* Basic networking knowledge
+
 ## Part 1: Setting Up the Environment
 
 ### Packet Tracer Topology:
 
-* **Action:** Recreate the network topology as outlined in the previous steps, including the PCs, switch, router, server, and cloud.
-* **Action:** Configure the IP addresses and routing as described.
-* **Action:** Ensure the network is working (test connectivity with ping).
-# Packet Tracer Network Topology Setup (R1, R2, Remote Server)
-
-This following outlines the setup for a Packet Tracer network topology using two routers (R1 and R2) and a server to simulate an Azure environment.
+This following outlines the setup for a Packet Tracer network topology. By the end, your topology should resemble below, for the troubleshooting portions of the lab:
+![image](https://github.com/user-attachments/assets/9564842d-f909-47a9-96e4-73c37075329f)
 
 ## Devices
 
@@ -110,6 +112,8 @@ Default Gateway: 10.0.0.1<br>
     * `ping 192.168.1.1`
     * `ping 203.0.113.2`
     * `ping 10.0.0.4`
+![image](https://github.com/user-attachments/assets/8a515b49-d83a-4675-a5e4-f3b7ba3cb222)
+![image](https://github.com/user-attachments/assets/ca6a6b52-80c5-4feb-aab3-85ffee5e2fa0)
 
 ## Breaking the Network for Troubleshooting
 
@@ -226,7 +230,7 @@ Default Gateway: 10.0.0.1<br>
 * **Action:** In osTicket, reply to the ticket.
 * **Action:** Instruct the user to ping the Azure server's simulated private IP address (10.0.0.4).
 * **Action:** Instruct them to run `tracert 10.0.0.4`.
-* **Action:** Use the command `192.168.1.1` to see if the default gateway is reachable.
+* **Action:** Use the command `192.168.1.1` to see if the default gateway is reachable.<br>
 ![image](https://github.com/user-attachments/assets/8c901e35-e197-44d0-8823-6a2f90da7489)
 #### Escalation:
 
@@ -237,15 +241,8 @@ Default Gateway: 10.0.0.1<br>
 
 * **Action:** Add the default route back to the router. `ip route 0.0.0.0 0.0.0.0 203.0.113.2`
 * **Action:** Test connectivity again.
-* **Action:** Close the ticket in osTicket.
+* **Action:** Close the ticket in osTicket.<br>
 ![image](https://github.com/user-attachments/assets/9b2a8a8a-2424-4a7f-a284-43bdd51df4cf)<br>
 ![image](https://github.com/user-attachments/assets/0a701382-b1e5-4432-b9ab-f6fa29038411)
 
-## Documentation:
-
-* **Emphasis:** Emphasize the importance of documenting all troubleshooting steps and findings in osTicket.
-
-## Communication:
-
-* **Highlight:** Highlight the importance of clear and effective communication with the user.#### Ticket Handling:
 
